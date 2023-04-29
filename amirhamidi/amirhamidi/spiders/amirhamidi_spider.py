@@ -48,17 +48,40 @@
 # Data extraction and stored in jl format
 # Running the project with command: scrapy crawl amirhamidi -O amirhamidi.jl
 
-import scrapy
+# import scrapy
 
 
-class AmirhamidiSpider(scrapy.Spider):
-    name = "amirhamidi"
-    allowed_domains = ["amirhamidi.pythonanywhere.com"]
+# class AmirhamidiSpider(scrapy.Spider):
+#     name = "amirhamidi"
+#     allowed_domains = ["amirhamidi.pythonanywhere.com"]
 
-    def start_requests(self):
-        yield scrapy.Request("http://amirhamidi.pythonanywhere.com/", self.parse)
+#     def start_requests(self):
+#         yield scrapy.Request("http://amirhamidi.pythonanywhere.com/", self.parse)
 
-    def parse(self, response):
+#     def parse(self, response):
 
-        for href in response.xpath('//a/@href').getall():
-            yield {"title": href}
+#         for href in response.xpath('//a/@href').getall():
+#             yield {"title": href}
+
+
+
+
+
+# Data extraction and stored xml jl format
+# Running the project with command: scrapy crawl amirhamidi -O amirhamidi.xml
+
+# import scrapy
+
+
+# class AmirhamidiSpider(scrapy.Spider):
+#     name = "amirhamidi"
+#     allowed_domains = ["amirhamidi.pythonanywhere.com"]
+
+#     def start_requests(self):
+#         return [scrapy.FormRequest("http://hamidiamir.pythonanywhere.com/")]
+
+#     def parse(self, response):
+
+#         for href in response.xpath('//a/@href').getall():
+#             yield {"title": href}
+
