@@ -67,7 +67,7 @@
 
 
 
-# Data extraction and stored xml jl format
+# Data extraction and stored xml format
 # Running the project with command: scrapy crawl amirhamidi -O amirhamidi.xml
 
 # import scrapy
@@ -85,3 +85,27 @@
 #         for href in response.xpath('//a/@href').getall():
 #             yield {"title": href}
 
+
+
+
+# store the extracted information in the MongoDB database
+# Running the project with command: scrapy crawl amirhamidi
+
+import scrapy
+from pymongo import MongoClient
+
+class AmirhamidiSpider(scrapy.Spider):
+    name = "amirhamidi"
+    allowed_domains = ["amirhamidi.pythonanywhere.com"]
+    start_urls = ["https://amirhamidi.pythonanywhere.com/"]
+
+    def parse(self, response):
+        client = MongoClient('localhost', 27017)
+        db = client['amirhamidi']
+        collection = db['hrefs']
+        for href in response.css('a::attr(href)').extract():
+            data = {
+                'href': href,
+            }
+            collection.insert_one(data)
+            yield data
