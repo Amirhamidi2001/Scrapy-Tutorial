@@ -1,18 +1,40 @@
-from pathlib import Path
+# Data extraction and stored in HTML format
+# Running the project with command: scrapy crawl amirhamidi
+
+# from pathlib import Path
+
+# import scrapy
+
+
+# class AmirhamidiSpider(scrapy.Spider):
+#     name = "amirhamidi"
+
+#     def start_requests(self):
+#         urls = ["https://amirhamidi.pythonanywhere.com/"]
+#         for url in urls:
+#             yield scrapy.Request(url=url, callback=self.parse)
+
+#     def parse(self, response):
+#         page = response.url.split("/")[-2]
+#         filename = f'amirhamdi.html'
+#         Path(filename).write_bytes(response.body)
+#         self.log(f'Saved file {filename}')
+
+
+
+
+# Data extraction and stored in json format
+# Running the project with command: scrapy crawl amirhamidi -O amirhamidi.json
 
 import scrapy
 
 
 class AmirhamidiSpider(scrapy.Spider):
     name = "amirhamidi"
-
-    def start_requests(self):
-        urls = ["https://amirhamidi.pythonanywhere.com/"]
-        for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+    allowed_domains = ["amirhamidi.pythonanywhere.com"]
+    start_urls = ["http://amirhamidi.pythonanywhere.com/"]
 
     def parse(self, response):
-        page = response.url.split("/")[-2]
-        filename = f'amirhamdi.html'
-        Path(filename).write_bytes(response.body)
-        self.log(f'Saved file {filename}')
+
+        for href in response.xpath('//a/@href').getall():
+            yield {"title": href}
