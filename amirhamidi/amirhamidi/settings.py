@@ -7,6 +7,12 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+MYSQL_HOST = 'localhost'
+MYSQL_PORT = 3306
+MYSQL_USER = 'root'
+MYSQL_PASSWORD = 'Arsalanh_2001'
+MYSQL_DATABASE = 'amirhamidi'
+
 BOT_NAME = "amirhamidi"
 
 SPIDER_MODULES = ["amirhamidi.spiders"]

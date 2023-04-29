@@ -91,21 +91,51 @@
 # store the extracted information in the MongoDB database
 # Running the project with command: scrapy crawl amirhamidi
 
-import scrapy
-from pymongo import MongoClient
+# import scrapy
+# from pymongo import MongoClient
 
-class AmirhamidiSpider(scrapy.Spider):
+# class AmirhamidiSpider(scrapy.Spider):
+#     name = "amirhamidi"
+#     allowed_domains = ["amirhamidi.pythonanywhere.com"]
+#     start_urls = ["https://amirhamidi.pythonanywhere.com/"]
+
+#     def parse(self, response):
+#         client = MongoClient('localhost', 27017)
+#         db = client['amirhamidi']
+#         collection = db['hrefs']
+#         for href in response.css('a::attr(href)').extract():
+#             data = {
+#                 'href': href,
+#             }
+#             collection.insert_one(data)
+#             yield data
+
+
+
+
+
+# store the extracted information in the MySQL database
+# Running the project with command: scrapy crawl amirhamidi
+
+import scrapy
+import mysql.connector
+
+class AmirHamidiSpider(scrapy.Spider):
     name = "amirhamidi"
     allowed_domains = ["amirhamidi.pythonanywhere.com"]
     start_urls = ["https://amirhamidi.pythonanywhere.com/"]
 
     def parse(self, response):
-        client = MongoClient('localhost', 27017)
-        db = client['amirhamidi']
-        collection = db['hrefs']
+        connection = mysql.connector.connect(
+            host=self.settings.get('MYSQL_HOST'),
+            port=self.settings.get('MYSQL_PORT'),
+            user=self.settings.get('MYSQL_USER'),
+            password=self.settings.get('MYSQL_PASSWORD'),
+            database=self.settings.get('MYSQL_DATABASE')
+        )
+        cursor = connection.cursor()
         for href in response.css('a::attr(href)').extract():
-            data = {
-                'href': href,
-            }
-            collection.insert_one(data)
-            yield data
+            sql = 'INSERT INTO hrefs (href) VALUES (%s)'
+            cursor.execute(sql, (href,))
+            connection.commit()
+            yield {'href': href}
